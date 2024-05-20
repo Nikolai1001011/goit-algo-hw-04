@@ -1,24 +1,24 @@
-def total_salary(path: str) -> tuple:
-    total_salary = 0
-    num_developers = 0
+def get_cats_info(path: str) -> list:
+    cats = []
     
     try:
         with open(path, 'r', encoding='utf-8') as file:
             for line in file:
-                developer, salary = line.strip().split(',')
-                total_salary += int(salary)
-                num_developers += 1
-                
-        if num_developers == 0:
-            print("Файл порожній.")
-            return (0, 0)
-    
+                try:
+                    cat_id, name, age = line.strip().split(',')
+                    cat_info = {
+                        "id": cat_id,
+                        "name": name,
+                        "age": age
+                    }
+                    cats.append(cat_info)
+                except ValueError:
+                    print(f"Line format error: {line.strip()}")
+                    continue
+
     except FileNotFoundError:
-        print("Файл не знайдено.")
-        return (0, 0)
+        print(f"Error: The file at {path} does not exist.")
     except Exception as e:
-        print(f"Помилка: {e}")
-        return (0, 0)
+        print(f"An error occurred: {e}")
     
-    average_salary = total_salary / num_developers
-    return total_salary, average_salary
+    return cats
